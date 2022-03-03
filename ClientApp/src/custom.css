@@ -1,14 +1,21 @@
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+  color: #030d18;
+  text-decoration: none !important;
 }
 
 code {
-  color: #E01A76;
+  color: #e01a76;
 }
 
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.form-con {
+  background-image: url("./Assets/img/formBg.jpg");
+  height: 100vh;
+  width: 100%;
 }
