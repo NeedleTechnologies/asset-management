@@ -14,12 +14,12 @@ pipeline {
         }
         stage('Install Depenpencies'){
             steps{
-                sh "dotnet restore"
+                sh "sudo dotnet restore"
             }
         }
         stage('Run Migration'){
             steps{
-                sh "dotnet ef database update"
+                sh "sudo dotnet ef database update"
             }
         }
         stage('Restart Service'){
