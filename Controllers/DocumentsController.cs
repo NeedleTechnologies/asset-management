@@ -46,7 +46,11 @@ namespace AssetManagement.Controllers
         [HttpPost("auth")]
         public async Task<IActionResult> Auth([FromBody] AuthModel model)
         {
-            return Ok(await _appServices.GenerateToken(model));
+            var resp = await _appServices.GenerateToken(model);
+            if(resp.status){
+                return Ok(resp);
+            }
+            return BadRequest(resp);
         }
 
         [ProducesResponseType(typeof(ApiResponse<List<FolderResponseModel>>), 200)]
@@ -140,11 +144,11 @@ namespace AssetManagement.Controllers
             }
         }
 
-        [HttpPost("upload-documents/{folderId}")]
-        public async Task<IActionResult> UploadDocument([FromForm]string folderId){
-            return Ok(new ApiResponse { 
-                message = "Document Uploaded successfully"
-            });
-        }
+        // [HttpPost("upload-documents/{folderId}")]
+        // public async Task<IActionResult> UploadDocument([FromForm]string folderId){
+        //     return Ok(new ApiResponse { 
+        //         message = "Document Uploaded successfully"
+        //     });
+        // }
     }
 }
