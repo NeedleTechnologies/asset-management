@@ -16,6 +16,7 @@ namespace AssetManagement.Database
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<DocumentFolder> DocumentFolders { get; set; }
+        public DbSet<Activity> Activities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
