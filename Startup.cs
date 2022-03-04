@@ -115,35 +115,35 @@ namespace AssetManagement {
                 app.UseHsts ();
             }
 
+            app.UseSwagger(setupAction: null);
+            app.UseSwaggerUI (c => {
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "APS API V1");
+            });
+
+            // app.UseHangfireServer();
+            // app.UseHangfireDashboard ();
+
             app.UseHttpsRedirection ();
             app.UseStaticFiles ();
             app.UseSpaStaticFiles ();
 
             app.UseRouting ();
-
-            // var provider = app.ApplicationServices;
-            // provider.UseScheduler(scheduler => {
-            //     scheduler.Schedule<SeedData>()
-            //         .
-            //         .PreventOverlapping("BackgroundServices");
-            // });
-            // provider.ConfigureQueue();
+            app.UseAuthentication ();
+            app.UseAuthorization ();
+            app.UseCors ("UnsafeCORSAllow");
 
             app.UseEndpoints (endpoints => {
                 endpoints.MapControllerRoute (
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-            });
-
-            app.UseSwagger (setupAction: null);
-            app.UseSwaggerUI (c => {
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "Asset Management App");
+                // endpoints.MapHangfireDashboard();
             });
 
             app.UseSpa (spa => {
                 spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment ()) {
+                    // spa.UseReactDevelopmentServer(npmScript: "start");
                     spa.UseProxyToSpaDevelopmentServer (Configuration["FrontendOrigin"]);
                 }
             });
