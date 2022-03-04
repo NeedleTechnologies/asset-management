@@ -139,5 +139,12 @@ namespace AssetManagement.Controllers
                 });
             }
         }
+
+        [HttpPost("upload-documents/{folderId}")]
+        public async Task<IActionResult> UploadDocument([FromForm]string folderId){
+            return Ok(new ApiResponse { 
+                message = "Document Uploaded successfully"
+            });
+        }
     }
 }

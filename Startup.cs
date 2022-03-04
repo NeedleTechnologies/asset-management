@@ -32,6 +32,24 @@ namespace AssetManagement {
         public void ConfigureServices (IServiceCollection services) {
             services.AddControllersWithViews ();
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                   builder
+                   .WithOrigins(Configuration["FrontendOrigin"])
+                   .WithHeaders("Content-Type", "Authorization")
+                   .AllowAnyMethod()
+                   .AllowCredentials()
+                );
+
+                options.AddPolicy("UnsafeCORSAllow", builder =>
+                   builder
+                   .WithHeaders("Content-Type", "Authorization")
+                   .AllowAnyMethod()
+                   .AllowAnyOrigin()
+                );
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                options.UseMySql(Configuration["ConnectionStrings:DefaultConnection"])
             );
