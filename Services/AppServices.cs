@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.Tasks;
 using asset_management.Entities;
 using asset_management.Models;
@@ -12,6 +13,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
 
 namespace asset_management.Services
 {
@@ -123,5 +127,118 @@ namespace asset_management.Services
             }
         }
 
+        public async Task<ServiceResponse> UploadDocument(string folderId, IFormFileCollection files, string rootPath, string userName)
+        {
+            var folder = await _dbContext.DocumentFolders.FirstOrDefaultAsync(x => x.folderUniqueKey == folderId);
+
+            if (folder is null)
+            {
+                return new ServiceResponse
+                {
+                    status = false,
+                    message = "Folder not found"
+                };
+            }
+            else
+            {
+                var documents = new List<Document>();
+                foreach (var file in files)
+                {
+                    string uniqueName = Guid.NewGuid().ToString("N") + "-" + Guid.NewGuid().ToString("N") + filetype(file.ContentType);
+                    var document = new Document
+                    {
+                        folderId = folder.Id,
+                        documentName = file.FileName,
+                        documentType = file.ContentType,
+                        uniqueDocumentName = uniqueName,
+                        uploadedBy = userName
+                    };
+                    var directory = Path.Combine(rootPath, $"Uploads/{folder.folderName}");
+                    if(!Directory.Exists(directory)){
+                        Directory.CreateDirectory(directory);
+                    }
+                    string path = Path.Combine(rootPath, $"Uploads/{folder.folderName}/") + uniqueName;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(memoryStream);
+                        var bytes = memoryStream.ToArray();
+                        await File.WriteAllBytesAsync(path, bytes);
+                    }
+
+                    documents.Add(document);
+                }
+
+                await _dbContext.Documents.AddRangeAsync(documents);
+                await _dbContext.SaveChangesAsync();
+
+                var respDocuments = documents.Select(x => new { 
+                    documentName = x.documentName,
+                    uniqueName = x.uniqueDocumentName,
+                    id = x.Id
+                });
+
+                return new ServiceResponse
+                {
+                    status = true,
+                    response = respDocuments,
+                    message = "Documents Uploaded Successfully"
+                };
+            }
+        }
+
+        public async Task<ApiResponse> GetDocuments(string folderId){
+            var folder = await _dbContext.DocumentFolders.FirstOrDefaultAsync(x => x.folderUniqueKey == folderId);
+            if(folder is null){
+                return new ApiResponse
+                {
+                    status = false,
+                    message = "Folder not found"
+                };
+            }
+            else{
+                var documents = await _dbContext.Documents.Where(x => x.folderId == folder.Id).ToListAsync();
+                var resp = new List<GetDocumentsResponseModel>();
+                documents.ForEach(x => {
+                    var docuResponse = new GetDocumentsResponseModel {
+                        uniqueDocumentName = x.uniqueDocumentName,
+                        dateUploaded = x.dateCreated,
+                        folderName = folder.folderName,
+                        documentName = x.documentName,
+                        uploadedBy = x.uploadedBy
+                     };
+
+                    resp.Add(docuResponse);
+                });
+
+                return new ApiResponse
+                {
+                    data = resp,
+                    status = true,
+                    message = "Documents retrieved successfully"
+                };
+            }
+
+        }
+
+        private string filetype (string cols) {
+            switch (cols) {
+                case "application/pdf":
+                    return ".pdf";
+                case "text/plain":
+                    return ".txt";
+                case "image/png":
+                    return ".png";
+                case "image/gif":
+                    return ".gif";
+                case "image/jpeg":
+                    return ".jpg";
+                case "application/msword":
+                    return ".doc";
+                case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                    return ".docx";
+                default:
+                    return ".docx";
+            }
+        }
     }
 }
