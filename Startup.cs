@@ -32,6 +32,8 @@ namespace AssetManagement {
         public void ConfigureServices (IServiceCollection services) {
             services.AddControllersWithViews ();
 
+            services.AddNodeServices ();
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>

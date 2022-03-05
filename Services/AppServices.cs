@@ -186,37 +186,30 @@ namespace asset_management.Services
             }
         }
 
-        public async Task<ApiResponse> GetDocuments(string folderId){
-            var folder = await _dbContext.DocumentFolders.FirstOrDefaultAsync(x => x.folderUniqueKey == folderId);
-            if(folder is null){
-                return new ApiResponse
+        public async Task<ApiResponse> GetDocuments(DocumentFolder folder)
+        {
+            var documents = await _dbContext.Documents.Where(x => x.folderId == folder.Id).ToListAsync();
+            var resp = new List<GetDocumentsResponseModel>();
+            documents.ForEach(x =>
+            {
+                var docuResponse = new GetDocumentsResponseModel
                 {
-                    status = false,
-                    message = "Folder not found"
+                    uniqueDocumentName = x.uniqueDocumentName,
+                    dateUploaded = x.dateCreated,
+                    folderName = folder.folderName,
+                    documentName = x.documentName,
+                    uploadedBy = x.uploadedBy
                 };
-            }
-            else{
-                var documents = await _dbContext.Documents.Where(x => x.folderId == folder.Id).ToListAsync();
-                var resp = new List<GetDocumentsResponseModel>();
-                documents.ForEach(x => {
-                    var docuResponse = new GetDocumentsResponseModel {
-                        uniqueDocumentName = x.uniqueDocumentName,
-                        dateUploaded = x.dateCreated,
-                        folderName = folder.folderName,
-                        documentName = x.documentName,
-                        uploadedBy = x.uploadedBy
-                     };
 
-                    resp.Add(docuResponse);
-                });
+                resp.Add(docuResponse);
+            });
 
-                return new ApiResponse
-                {
-                    data = resp,
-                    status = true,
-                    message = "Documents retrieved successfully"
-                };
-            }
+            return new ApiResponse
+            {
+                data = resp,
+                status = true,
+                message = "Documents retrieved successfully"
+            };
 
         }
 

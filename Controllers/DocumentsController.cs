@@ -204,7 +204,7 @@ namespace AssetManagement.Controllers
 
         [ProducesResponseType(typeof(FileContentResult), 200)]
         [ProducesResponseType(typeof(NotFoundObjectResult), 404)]
-        [HttpPost("get-document/{uniqueDocumentName}")]
+        [HttpGet("get-document/{uniqueDocumentName}")]
         [Authorize]
         public async Task<IActionResult> GetDocument(string uniqueDocumentName){
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -231,6 +231,38 @@ namespace AssetManagement.Controllers
             var path = Path.Combine(_env.WebRootPath, $"Uploads/{document.documentFolder.folderName}/") + document.uniqueDocumentName;
             var fileBytes = await System.IO.File.ReadAllBytesAsync(path);
             return File(fileBytes, document.documentType, document.documentName);
+        }
+
+        [ProducesResponseType(typeof(FileContentResult), 200)]
+        [ProducesResponseType(typeof(NotFoundObjectResult), 404)]
+        [HttpGet("get-folder-documents/{folderId}")]
+        [Authorize]
+        public async Task<IActionResult> GetDocumentByFolderId(string folderId){
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _dbcontext.ApplicationUser.FirstOrDefaultAsync(x=>x.Id == userId) ;
+
+            var folder = await _dbcontext.DocumentFolders.FirstOrDefaultAsync(x => x.folderUniqueKey == folderId);
+            if(folder is null){
+                return BadRequest(new ApiResponse
+                {
+                    status = false,
+                    message = "Folder not found"
+                });
+            }
+
+            var resp = await _appServices.GetDocuments(folder);
+            if(resp.status){
+                var activity = new Activity
+            {
+                description = $"{user.UserName} fetches files in {folder.folderName}",
+                userName = user.UserName,
+            };
+            
+            await _dbcontext.Activities.AddAsync(activity);
+            await _dbcontext.SaveChangesAsync();
+                return Ok(resp);
+            }
+            return BadRequest(resp);
         }
     }
 }
