@@ -9,6 +9,7 @@ import configureStore from "./store/configureStore";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { AuthProvider } from "./context/authContext";
 
 // Create browser history to use in the Redux store
 const baseUrl = document
@@ -22,7 +23,9 @@ const store = configureStore(history);
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById("root")
