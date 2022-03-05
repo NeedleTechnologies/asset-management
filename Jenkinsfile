@@ -17,11 +17,11 @@ pipeline {
                 sh "sudo dotnet restore"
             }
         }
-        stage('Run Migration'){
-            steps{
-                sh "sudo dotnet ef database update"
-            }
-        }
+        // stage('Run Migration'){
+        //     steps{
+        //         sh "sudo dotnet ef database update"
+        //     }
+        // }
         stage('Restart Service'){
             steps{
                 sh 'sudo systemctl restart assets-management'
