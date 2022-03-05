@@ -33,17 +33,20 @@ const Login = () => {
           // withCredentials: true,
         }
       );
-      console.log(response);
+      console.log(response.request);
       if (response.status === 200) {
         alert.success("Login Successful");
         localStorage.setItem("token", response.data.response.token);
-        history.push("/home");
+        history.push("/view-all");
+      } else {
+        alert.error("Invalid Credentials");
       }
       setUsername("");
       setPassword("");
       setSuccess(true);
     } catch (err) {
       console.log(err);
+      alert.error("Invalid Credentials");
     }
   };
 

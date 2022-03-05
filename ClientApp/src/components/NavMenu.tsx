@@ -35,20 +35,15 @@ const NavMenu = () => {
           <Collapse className="d-sm-inline-flex flex-sm-row-reverse" navbar>
             <ul className="navbar-nav flex-grow">
               <NavItem className="p-3">
-                <NavLink tag={Link} className="text-dark" to="/home">
-                  Home
-                </NavLink>
-              </NavItem>
-              <NavItem className="p-3">
                 <NavLink tag={Link} className="text-dark" to="/view-all">
-                  View
+                  Folder
                 </NavLink>
               </NavItem>
-              <NavItem className="p-3">
+              {/* <NavItem className="p-3">
                 <NavLink tag={Link} className="text-dark" to="/upload-file">
                   Upload
                 </NavLink>
-              </NavItem>
+              </NavItem> */}
               <NavItem className="p-3">
                 <NavLink
                   tag={Link}

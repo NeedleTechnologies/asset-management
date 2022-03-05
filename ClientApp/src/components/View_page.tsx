@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import { Link, RouteComponentProps } from "react-router-dom";
 import NavMenu from "./NavMenu";
@@ -6,24 +6,25 @@ import { useDropzone } from "react-dropzone";
 import moment from "moment";
 import { useAlert } from "react-alert";
 import axios from "../api/Base";
-import { Container } from "reactstrap";
+import { saveAs } from "file-saver";
+import { Button } from "reactstrap";
 interface fileStructure {
   documentName: string;
   folderId: string;
   dateUploaded: string;
   uploadedBy: string;
+  uniqueDocumentName: string;
 }
 
 const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
   console.log(match.params.id);
   const [documents, setDocument] = useState([]);
   const [files, setFiles] = React.useState([]);
-  function refresh() {
-    window.location.reload();
-  }
+
   const alert = useAlert();
   const token = localStorage.getItem("token");
-  useEffect(() => {
+
+  const getFiles = useCallback(() => {
     axios
       .get(`/get-folder-documents/${match.params.id}`, {
         headers: {
@@ -36,6 +37,10 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
         setDocument(response.data.data);
       })
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    getFiles();
   }, []);
 
   function fileSizeValidator(file: any) {
@@ -90,34 +95,42 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
             </div>
           </div>
           {files.length > 0 && (
-            <button
-              onClick={() => {
-                const formData = new FormData();
-                let file = files[0];
-                formData.append("file", file);
-                formData.append("upload_preset", "s9n5tgkf");
-                axios
-                  .post(`upload-documents/${match.params.id}`, formData, {
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`,
-                    },
-                  })
-                  .then((response) => {
-                    alert.success(`${response.data.message}`);
-                    refresh();
-                  })
-                  .then((data) => {
-                    console.log(data);
-                  });
-                refresh();
-              }}
-            >
-              Upload
-            </button>
+            <div className="text-center">
+              <Button
+                className="btn btn-success"
+                onClick={() => {
+                  const formData = new FormData();
+                  let file = files[0];
+                  formData.append("file", file);
+                  formData.append("upload_preset", "s9n5tgkf");
+                  axios
+                    .post(`upload-documents/${match.params.id}`, formData, {
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                      },
+                    })
+                    .then((response) => {
+                      alert.success(`${response.data.message}`);
+                      setFiles([]);
+                      getFiles();
+                    })
+                    .then((data) => {
+                      console.log(data);
+                    });
+                }}
+              >
+                Click here to upload
+              </Button>
+            </div>
           )}
           {files.map((f: any) => {
-            return <img src={f.name} />;
+            // return <img src={f.preview} />;
+            return (
+              <ul>
+                <li>{f.name}</li>
+              </ul>
+            );
           })}
 
           {fileRejections.map(({ errors }) => {
@@ -138,6 +151,7 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
                 <th scope="col">File</th>
                 <th scope="col">Date</th>
                 <th scope="col">Uploaded By</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -147,6 +161,28 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
                   <td>{docu.documentName} </td>
                   <td> {moment(docu.dateUploaded).format("ll")} </td>
                   <td> {docu.uploadedBy} </td>
+                  <td>
+                    <Button className="btn btn-success">
+                      <a
+                        onClick={async () => {
+                          const response = await fetch(
+                            `https://assets.remsys.com.ng/Documents/get-document/${docu.uniqueDocumentName}`,
+                            {
+                              headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                              },
+                            }
+                          );
+                          const downloadFile = await response.blob();
+                          saveAs(downloadFile, docu.uniqueDocumentName);
+                        }}
+                        // href={`https://assets.remsys.com.ng/Documents/get-document/${docu.uniqueDocumentName}`}
+                      >
+                        Download
+                      </a>
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
