@@ -10,22 +10,6 @@ object-assign
   http://jedwatson.github.io/classnames
 */
 
-/*!
- * FilePond 4.30.3
- * Licensed under MIT, https://opensource.org/licenses/MIT/
- * Please visit https://pqina.nl/filepond/ for details.
- */
-
-/*!
- * react-filepond v7.1.1
- * A handy FilePond adapter component for React
- * 
- * Copyright (c) 2021 PQINA
- * https://pqina.nl/filepond
- * 
- * Licensed under the MIT license.
- */
-
 /** @license React v0.17.0
  * scheduler.production.min.js
  *
