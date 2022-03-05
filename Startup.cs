@@ -137,7 +137,7 @@ namespace AssetManagement {
 
             app.UseSwagger(setupAction: null);
             app.UseSwaggerUI (c => {
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "APS API V1");
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "Assets API V1");
             });
 
             // app.UseHangfireServer();
