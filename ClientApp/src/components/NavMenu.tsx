@@ -50,19 +50,18 @@ const NavMenu = () => {
                 </NavLink>
               </NavItem>
               <NavItem className="p-3">
-                <NavLink tag={Link} className="text-danger" to="/">
+                <NavLink
+                  tag={Link}
+                  className="text-danger"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    history.push("/");
+                  }}
+                >
                   <strong>Logout</strong>
                 </NavLink>
               </NavItem>
             </ul>
-            <button
-              onClick={() => {
-                localStorage.removeItem("token");
-                history.push("/");
-              }}
-            >
-              logout
-            </button>
           </Collapse>
         </Container>
       </Navbar>

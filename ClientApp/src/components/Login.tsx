@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import logo from "../Assets/img/logo.png";
 import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../context/authContext";
+import { useAlert } from "react-alert";
 
 import axios from "../api/Base";
 const LOGIN_URL = "/auth";
@@ -10,7 +11,7 @@ const LOGIN_URL = "/auth";
 const Login = () => {
   const setAuth = useContext(AuthContext);
   const history = useHistory();
-
+  const alert = useAlert();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -34,12 +35,10 @@ const Login = () => {
       );
       console.log(response);
       if (response.status === 200) {
+        alert.success("Login Successful");
         localStorage.setItem("token", response.data.response.token);
         history.push("/home");
-      } else if (response.status === 401) {
-        console.log("invalid login credentials");
       }
-
       setUsername("");
       setPassword("");
       setSuccess(true);
