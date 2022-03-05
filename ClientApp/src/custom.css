@@ -1,10 +1,11 @@
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+  color: #030d18;
+  text-decoration: none !important;
 }
 
 code {
-  color: #E01A76;
+  color: #e01a76;
 }
 
 .btn-primary {
@@ -12,3 +13,38 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.form-con {
+  background-image: url("./Assets/img/formBg.jpg");
+  height: 100vh;
+  width: 100%;
+}
+/* 
+width: 300px;
+padding: 20px;
+font-size: 80%;
+background: #ffffffdd;
+backdrop-filter: blur(10px);
+display: flex;
+align-items: center;
+font-weight: bold;
+color: #fffff;
+box-shadow: 0px 18px 32px 0px rgba(76, 147, 255, 0.38);
+
+> svg {
+  flex-shrink: 0;
+}
+
+* + * {
+  margin-left: 10px;
+}
+
+&.success {
+  background: #569d58;
+  color: white;
+}
+
+&.error {
+  background: #d9350f;
+  color: white;
+} */
