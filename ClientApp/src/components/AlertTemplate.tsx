@@ -7,7 +7,7 @@ export const AlertTemplate: React.ComponentType<AlertTemplateProps> = ({
   message,
 }) => {
   return (
-    <div className={options.type} style={{ marginBottom: 20 }}>
+    <div id="Alert" className={options.type} style={{ marginBottom: 20 }}>
       {options.type === "success" ? (
         <Check />
       ) : options.type === "error" ? (

@@ -79,7 +79,7 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
       <div className="container">
         <div>
           <div className="upload-sec p-4">
-            <div className="bg-success p-5 text-white">
+            <div className="bg-info p-5 text-white">
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 {isDragActive ? (
@@ -162,7 +162,7 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
                   <td> {moment(docu.dateUploaded).format("ll")} </td>
                   <td> {docu.uploadedBy} </td>
                   <td>
-                    <Button className="btn btn-success">
+                    <Button className="btn btn-info text-white">
                       <a
                         onClick={async () => {
                           const response = await fetch(
