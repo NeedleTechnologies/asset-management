@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://assets.remsys.com.ng/Documents",
+  baseURL: "http://192.168.68.116/Documents",
 });
