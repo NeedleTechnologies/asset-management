@@ -175,7 +175,7 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
                             }
                           );
                           const downloadFile = await response.blob();
-                          saveAs(downloadFile, docu.uniqueDocumentName);
+                          saveAs(downloadFile, docu.documentName);
                         }}
                         // href={`https://assets.remsys.com.ng/Documents/get-document/${docu.uniqueDocumentName}`}
                       >
