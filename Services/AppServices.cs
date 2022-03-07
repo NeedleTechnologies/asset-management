@@ -66,6 +66,7 @@ namespace asset_management.Services
                 {
                     token = encodeToken,
                     Name = $"{User.firstName} {User.lastName}",
+                    role = role.First()
                 };
 
                 return new ServiceResponse { response = response, status = true };
