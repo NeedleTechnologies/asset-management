@@ -87,7 +87,7 @@ namespace AssetManagement.Controllers
         [ProducesResponseType(typeof(ApiResponse<List<FolderResponseModel>>), 200)]
         [ProducesResponseType(typeof(String), 400)]
         [HttpPost("create-folder")]
-        [Authorize]
+        [Authorize (Roles ="Admin")]
         public async Task<IActionResult> CreateFolders([FromBody] CreateFolderRequestModel model)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
