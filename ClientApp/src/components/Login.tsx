@@ -37,6 +37,7 @@ const Login = () => {
       if (response.status === 200) {
         alert.success("Login Successful");
         localStorage.setItem("token", response.data.response.token);
+        localStorage.setItem("role", response.data.response.role);
         history.push("/view-all");
       } else {
         alert.error("Invalid Credentials");

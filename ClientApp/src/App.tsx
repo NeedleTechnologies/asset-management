@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import View_upload from "./components/View_page";
 // import Upload_file from "./components/Upload_page";
 import View_all from "./components/View_all";
+import Create_folder from "./components/Create_folder";
 
 export default () => (
   <Router>
@@ -22,7 +23,7 @@ export default () => (
         <Route exact path="/" component={Login} />
         {/* <Route path="/home" component={Home} /> */}
         <Route path="/view-upload/:id" component={View_upload} />
-        {/* <Route path="/upload-file" component={Upload_file} /> */}
+        <Route path="/create-folder" component={Create_folder} />
         <Route path="/view-all" component={View_all} />
       </Layout>
     </AlertProvider>

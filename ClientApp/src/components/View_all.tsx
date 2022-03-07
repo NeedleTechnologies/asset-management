@@ -7,6 +7,7 @@ import folderUpload from "../Assets/img/folder-upload.png";
 
 import axios from "../api/Base";
 import { AxiosResponse } from "axios";
+import { Button } from "reactstrap";
 
 interface folderStructure {
   folderName: string;
@@ -16,7 +17,10 @@ interface folderStructure {
 const View_all = () => {
   const [folder, setFolder] = useState([]);
 
+  const user = null;
   const token = localStorage.getItem("token");
+
+  const role = localStorage.getItem("role");
   useEffect(() => {
     axios
       .get("/get-folders", {
@@ -36,10 +40,17 @@ const View_all = () => {
       <NavMenu />
 
       <div className="container">
+        <div className="">
+          {role === "Admin" ? (
+            <Link to="/create-folder">
+              <Button className="btn btn-success">Create Folder</Button>
+            </Link>
+          ) : null}
+        </div>
         <div className="vh-100  justify-content-center align-items-center text-center">
           <div className="row">
             {folder.map((fold: folderStructure, i) => (
-              <div className="col m-5" key={i}>
+              <div className="col-md m-5" key={i}>
                 <Link to={`/view-upload/${fold.folderId}`}>
                   <img width={200} height={200} src={folderIcon} />
                   <h4 className="text-dark"> {fold.folderName} </h4>
