@@ -166,7 +166,7 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
                       <a
                         onClick={async () => {
                           const response = await fetch(
-                            `https://assets.remsys.com.ng/Documents/get-document/${docu.uniqueDocumentName}`,
+                            `http://192.168.68.103/Documents/get-document/${docu.uniqueDocumentName}`,
                             {
                               headers: {
                                 "Content-Type": "application/json",
