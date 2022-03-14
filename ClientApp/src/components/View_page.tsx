@@ -166,7 +166,7 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
                       <a
                         onClick={async () => {
                           const response = await fetch(
-                            `http://192.168.68.103/Documents/get-document/${docu.uniqueDocumentName}`,
+                            `https://assets.remsys.com.ng/Documents/get-document/${docu.uniqueDocumentName}`,
                             {
                               headers: {
                                 "Content-Type": "application/json",
@@ -177,7 +177,6 @@ const View_upload = ({ match }: RouteComponentProps<{ id: string }>) => {
                           const downloadFile = await response.blob();
                           saveAs(downloadFile, docu.documentName);
                         }}
-                        // href={`https://assets.remsys.com.ng/Documents/get-document/${docu.uniqueDocumentName}`}
                       >
                         Download
                       </a>

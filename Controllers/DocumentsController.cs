@@ -145,10 +145,11 @@ namespace AssetManagement.Controllers
             {
                 firstName = model.FirstName,
                 lastName = model.LastName,
-                UserName = model.Username
+                UserName = model.Username,
+                Email = model.Email
             };
 
-            var dataResp = await _appServices.Register(user, model.Password, model.Role);
+            var dataResp = await _appServices.Register(user, model.Password, "user");
 
             if (dataResp.status)
             {

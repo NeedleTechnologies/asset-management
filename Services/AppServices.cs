@@ -108,7 +108,7 @@ namespace asset_management.Services
 
         public async Task<ServiceResponse> Register(ApplicationUser User, string Password, string Role)
         {
-            User.Email = "needlesupport@needletech.ng";
+            // User.Email = "needlesupport@needletech.ng";
 
             var result = await _userManager.CreateAsync(User, Password);
 
