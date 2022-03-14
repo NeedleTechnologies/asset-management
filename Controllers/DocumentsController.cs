@@ -141,14 +141,24 @@ namespace AssetManagement.Controllers
                 });
             }
 
+            if (_dbcontext.ApplicationUser.Any(x => x.Email.ToLower() == model.Email.ToLower()))
+            {
+                return BadRequest(new ApiResponse
+                {
+                    status = false,
+                    message = "Email in existence"
+                });
+            }
+
             var user = new ApplicationUser
             {
                 firstName = model.FirstName,
                 lastName = model.LastName,
-                UserName = model.Username
+                UserName = model.Username,
+                Email = model.Email
             };
 
-            var dataResp = await _appServices.Register(user, model.Password, model.Role);
+            var dataResp = await _appServices.Register(user, model.Password, "user");
 
             if (dataResp.status)
             {
