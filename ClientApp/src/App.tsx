@@ -11,6 +11,7 @@ import View_upload from "./components/View_page";
 // import Upload_file from "./components/Upload_page";
 import View_all from "./components/View_all";
 import Create_folder from "./components/Create_folder";
+import Create_user from "./components/Create_user";
 
 export default () => (
   <Router>
@@ -24,6 +25,7 @@ export default () => (
         {/* <Route path="/home" component={Home} /> */}
         <Route path="/view-upload/:id" component={View_upload} />
         <Route path="/create-folder" component={Create_folder} />
+        <Route path="/create-user" component={Create_user} />
         <Route path="/view-all" component={View_all} />
       </Layout>
     </AlertProvider>

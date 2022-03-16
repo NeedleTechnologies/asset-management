@@ -36,7 +36,7 @@ const NavMenu = () => {
             <ul className="navbar-nav flex-grow">
               <NavItem className="p-3">
                 <NavLink tag={Link} className="text-dark" to="/view-all">
-                  Folder
+                  Folders
                 </NavLink>
               </NavItem>
               {/* <NavItem className="p-3">

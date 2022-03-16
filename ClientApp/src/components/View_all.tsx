@@ -40,12 +40,21 @@ const View_all = () => {
       <NavMenu />
 
       <div className="container">
-        <div className="">
-          {role === "Admin" ? (
-            <Link to="/create-folder">
-              <Button className="btn btn-success">Create Folder</Button>
-            </Link>
-          ) : null}
+        <div className="row">
+          <div className="col-2">
+            {role === "Admin" ? (
+              <Link to="/create-folder">
+                <Button className="btn btn-success">Create Folder</Button>
+              </Link>
+            ) : null}
+          </div>
+          <div className="col-2">
+            {role === "Admin" ? (
+              <Link to="/create-user">
+                <Button className="btn btn-info">Create user</Button>
+              </Link>
+            ) : null}
+          </div>
         </div>
         <div className="vh-100  justify-content-center align-items-center text-center">
           <div className="row">
