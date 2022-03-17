@@ -51,7 +51,7 @@ const View_all = () => {
           <div className="col-2">
             {role === "Admin" ? (
               <Link to="/create-user">
-                <Button className="btn btn-info">Create user</Button>
+                <Button className="btn btn-info text-white">Create user</Button>
               </Link>
             ) : null}
           </div>
